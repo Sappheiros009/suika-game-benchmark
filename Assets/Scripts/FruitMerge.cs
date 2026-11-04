@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,9 +19,7 @@ public sealed class FruitMerge : MonoBehaviour
     [SerializeField, Min(0)] private float chainMergeDelay = .2f;
 
     private Rigidbody2D body;
-    private CircleCollider2D fruitCollider;
     private float remainingMergeDelay;
-    private readonly List<ContactPoint2D> contacts = new List<ContactPoint2D>(8);
 
     public FruitType Type => fruitType;
     public GameObject NextFruitPrefab => nextFruitPrefab;
@@ -31,7 +28,6 @@ public sealed class FruitMerge : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        fruitCollider = GetComponent<CircleCollider2D>();
     }
 
     private void FixedUpdate()
@@ -39,16 +35,6 @@ public sealed class FruitMerge : MonoBehaviour
         if (IsMerging || remainingMergeDelay <= 0) return;
 
         remainingMergeDelay = Mathf.Max(0, remainingMergeDelay - Time.fixedDeltaTime);
-        if (remainingMergeDelay > 0) return;
-
-        // 대기 중에 물리적으로 잠들어도, 대기 종료 시 현재 접촉을 다시 확인한다.
-        int count = fruitCollider.GetContacts(contacts);
-        for (int i = 0; i < count && !IsMerging; i++)
-        {
-            var contact = contacts[i];
-            var other = contact.collider == fruitCollider ? contact.otherCollider : contact.collider;
-            if (other != null) TryMerge(other.GetComponentInParent<FruitMerge>());
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

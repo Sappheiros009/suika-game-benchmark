@@ -181,6 +181,7 @@ public static class FruitPrefabSetup
         {
             root.name = "FruitBase";
             root.transform.localScale = Vector3.one;
+            root.GetComponent<Rigidbody2D>().sleepMode = RigidbodySleepMode2D.NeverSleep;
             var face = root.transform.Find("Face").gameObject;
             face.GetComponent<SpriteRenderer>().sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Faces/face_idle.png");
             var animator = face.GetComponent<Animator>();
