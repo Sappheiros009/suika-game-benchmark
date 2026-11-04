@@ -8,13 +8,9 @@
 
 **제공된 코드 템플릿 사용은 선택 사항입니다.** 템플릿의 빈칸을 채우거나 직접 코드를 작성해도 됩니다. 템플릿 사용 여부와 관계없이 동일한 기능과 플레이 영상 기준으로 평가합니다.
 
-> **검토용 초안**: 배점과 통과 점수는 검토용 제안입니다.
-
 ## 1. 진행 방식
 
 - Unity 버전: `6000.6.7f1`
-- 입력 설정: Active Input Handling은 `Both`입니다. 과제의 키보드 입력 코드는 `Input.GetKey`와 `Input.GetKeyDown`을 사용합니다.
-- UI 글자는 TextMeshProUGUI를 사용합니다.
 - 과일 단계: **체리 → 귤 → 사과 → 멜론 → 수박**
 - 플레이 중 무작위로 떨어뜨릴 수 있는 과일은 **체리·귤·사과**입니다. 멜론과 수박은 합체로만 만듭니다.
 - 수박이 마지막 단계입니다. 수박 두 개가 만나도 추가 합체하지 않습니다.
@@ -44,14 +40,11 @@
 | `Assets/Art/Basket/basket_frame.png` | 안쪽이 투명한 바구니 테두리 | 바구니 SpriteRenderer |
 | `Assets/Art/Guides/drop_guide.png` | 세로 점선 | 낙하 위치를 표시할 `DropGuide` |
 | `Assets/Art/Guides/game_over_line.png` | 가로 파선 | 높이 제한을 표시할 `GameOverLine` |
-| `Assets/Art/Layout/` | `Rounded.png`, `Circle.png`, `SpriteUnlit.mat` | 패널 장식과 스프라이트 표시용 머티리얼 |
-| `Assets/TextMesh Pro/` | TMP 기본 리소스와 LiberationSans SDF 폰트 | 점수·과일 이름·안내 문구 |
 
 ### 과일·표정·바구니
 
 - 몸통과 표정은 서로 다른 SpriteRenderer로 배치합니다. `Body`보다 `Face`가 앞에 보이도록 Sorting Order를 설정합니다. 과일별로 표정을 다시 그릴 필요 없이 공통 표정 이미지를 사용합니다.
 - 바구니 이미지는 그림만 제공합니다. 좌우 벽과 바닥의 Collider를 별도로 구성하고 그림 안쪽 경계에 맞춥니다.
-- 화면이 어둡게 보일 경우 SpriteRenderer에 제공 `SpriteUnlit.mat`을 연결할 수 있습니다.
 
 ### 낙하 가이드·게임오버 제한선
 
@@ -193,4 +186,6 @@ Space를 누른 순간 해당 위치에서 과일 하나가 떨어집니다. 키
 
 - **플레이 영상**: 구현한 기능이 실제로 동작하는 모습을 촬영합니다. 각 평가 항목을 확인할 수 있는 타임스탬프를 함께 적고, 합체·점수 변화·게임오버·재시작은 전후 흐름을 확인할 수 있게 보여주세요.
 - **Git 저장소 링크**: 평가자가 접근할 수 있는 저장소 링크와 제출할 브랜치 또는 커밋을 명시합니다. Unity 프로젝트의 `Assets`, `Packages`, `ProjectSettings`와 리소스의 `.meta` 파일을 포함하고 `Library`, `Temp`, `Logs`는 제외합니다.
-- 저장소 README에 실행할 씬 경로, 구현·미구현 항목, 영상 링크와 타임스탬프를 정리합니다. 외부 리소스를 사용했다면 출처·이용 조건도 적습니다.
+
+> [!IMPORTANT]
+> **저장소 README에 실행할 씬 경로, 구현·미구현 항목을 적어주세요.**
