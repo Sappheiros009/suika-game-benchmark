@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 7617571211951500062}
   - component: {fileID: 8198283392803478101}
   - component: {fileID: 8899749831786376318}
+  - component: {fileID: 7972113059524744012}
   m_Layer: 0
   m_Name: FruitBase
   m_TagString: Untagged
@@ -336,3 +337,17 @@ MonoBehaviour:
   fruitType: 0
   nextFruitPrefab: {fileID: 0}
   chainMergeDelay: 0.2
+--- !u!114 &7972113059524744012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6965499548051139995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18bd7caf8b35e64438cdb3e99cd55b3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitImpactSound
+  minImpactSpeed: 1.2
+  maxImpactSpeed: 8

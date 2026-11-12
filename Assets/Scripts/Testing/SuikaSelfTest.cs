@@ -63,10 +63,10 @@ public sealed class SuikaSelfTest : MonoBehaviour
 
     private bool Setup()
     {
-        drop = FindFirstObjectByType<FruitDropManager>();
-        over = FindFirstObjectByType<GameOverManager>();
-        board = FindFirstObjectByType<LeaderboardManager>();
-        preview = FindFirstObjectByType<DropPreview>();
+        drop = FindAnyObjectByType<FruitDropManager>();
+        over = FindAnyObjectByType<GameOverManager>();
+        board = FindAnyObjectByType<LeaderboardManager>();
+        preview = FindAnyObjectByType<DropPreview>();
         spawned = GameObject.Find("SpawnedFruits")?.transform;
         guide = GameObject.Find("DropGuide")?.transform;
         line = GameObject.Find("GameOverLine")?.transform;
@@ -234,6 +234,8 @@ public sealed class SuikaSelfTest : MonoBehaviour
         Check("왼쪽 끝에서 바구니 안으로 제한", drop.DropPoint.position.x >= minX - .001f, $"x={drop.DropPoint.position.x:F3} min={minX:F3}");
         Check("가이드가 낙하 위치를 따라감", Mathf.Abs(guide.position.x - drop.DropPoint.position.x) < .001f);
         Check("이동 중 낙하 높이 유지", Mathf.Abs(drop.DropPoint.position.y - y) < .0001f);
+        // 미리보기는 LateUpdate에서 따라가므로 한 프레임 뒤에 확인합니다.
+        yield return null;
         Check("A) 미리보기가 좌우 이동을 따라감", Mathf.Abs(preview.transform.position.x - drop.DropPoint.position.x) < .2f);
 
         drop.MoveDropPoint(50f);
@@ -306,13 +308,22 @@ public sealed class SuikaSelfTest : MonoBehaviour
         ScoreManager.Instance.ResetScore();
         float rc = Radius(cherry);
         float rm = Radius(mandarin);
-        Spawn(mandarin, new Vector2(0, floorY + rm));
-        float x = rm + rc;
-        Spawn(cherry, new Vector2(x, floorY + rc));
-        Spawn(cherry, new Vector2(x, floorY + rc * 3f - .05f));
-        yield return Wait(1.2f);
-        Check("체리→귤 후 기존 귤과 연쇄 합체해 사과", Count(FruitType.Apple) == 1 && Count(FruitType.Mandarin) == 0, $"apple={Count(FruitType.Apple)} mandarin={Count(FruitType.Mandarin)}");
-        Check("연쇄 합체 총 40점", ScoreManager.Instance.CurrentScore == 40, $"score={ScoreManager.Instance.CurrentScore}");
+        // 바닥의 귤 두 개 사이 홈에 체리 두 개를 얹습니다. 체리가 합쳐진 귤은 아래 귤 위로 떨어져
+        // 계속 닿아 있게 되므로, 0.2초 대기가 끝난 뒤 연쇄 합체가 일어나야 합니다.
+        Spawn(mandarin, new Vector2(-rm, floorY + rm));
+        Spawn(apple, new Vector2(rm + Radius(apple) + .02f, floorY + Radius(apple)));
+        float top = floorY + rm * 2f;
+        Spawn(cherry, new Vector2(-rm, top + rc));
+        Spawn(cherry, new Vector2(-rm + .05f, top + rc * 3f - .05f));
+        yield return Wait(1.5f);
+        // 옆에 둔 사과는 받침 역할이며, 연쇄로 생긴 사과와 만나면 멜론까지 이어질 수 있습니다.
+        int apples = Count(FruitType.Apple);
+        int melons = Count(FruitType.Melon);
+        int score = ScoreManager.Instance.CurrentScore;
+        bool chained = Count(FruitType.Mandarin) == 0 && Count(FruitType.Cherry) == 0
+            && ((apples == 2 && melons == 0 && score == 40) || (apples == 0 && melons == 1 && score == 120));
+        Check("체리→귤 후 기존 귤과 연쇄 합체해 사과", chained, $"apple={apples} melon={melons} mandarin={Count(FruitType.Mandarin)}");
+        Check("연쇄 합체 점수(귤 10 + 사과 30 = 40)", score == 40 || score == 120, $"score={score}");
     }
 
     private IEnumerator TestBriefOverflow()
@@ -361,7 +372,7 @@ public sealed class SuikaSelfTest : MonoBehaviour
         int scoreAtEnd = ScoreManager.Instance.CurrentScore;
 
         // 제한선 위에 고정된 과일로 게임오버를 만듭니다(생성 유예 1초 + 초과 1초).
-        var fruit = Spawn(cherry, new Vector2(0, line.position.y + .8f));
+        var fruit = Spawn(watermelon, new Vector2(-1.2f, line.position.y + 1f));
         fruit.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         float waited = 0;
         while (!over.IsGameOver && waited < 4f)
@@ -377,6 +388,10 @@ public sealed class SuikaSelfTest : MonoBehaviour
         Check("게임오버 중 낙하 불가", drop.DropFruit() == null);
         Check("A) 게임오버 시 미리보기 숨김", !preview.GetComponent<SpriteRenderer>().enabled);
         Check("B) 기록 1개 등록", board.Entries.Count == Mathf.Min(recordsBefore + 1, 5), $"records={board.Entries.Count}");
+        var badge = panel.transform.Find("Card/NewBest");
+        // 이 시점까지 재시작이 없었으므로 판 시작 최고 기록은 0입니다. 최종 점수가 현재 최고 기록일 때만 배지가 떠야 합니다.
+        bool expectBadge = scoreAtEnd > 0 && scoreAtEnd >= ScoreManager.Instance.BestScore;
+        Check("최고 기록 배지는 실제 갱신 때만 표시", badge != null && badge.gameObject.activeSelf == expectBadge, $"score={scoreAtEnd} best={ScoreManager.Instance.BestScore} badge={(badge != null && badge.gameObject.activeSelf)}");
 
         yield return new WaitForSecondsRealtime(.5f);
         Shot("03_game_over");
@@ -404,7 +419,7 @@ public sealed class SuikaSelfTest : MonoBehaviour
 
         // 두 번째 판: 점수를 만든 뒤 다시 게임오버 → 기록이 정렬되어 추가되는지 확인합니다.
         ScoreManager.Instance.AddMergeScore(FruitType.Melon);
-        var second = Spawn(cherry, new Vector2(0, line.position.y + .8f));
+        var second = Spawn(watermelon, new Vector2(-1.2f, line.position.y + 1f));
         second.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
         waited = 0;
         while (!over.IsGameOver && waited < 4f)

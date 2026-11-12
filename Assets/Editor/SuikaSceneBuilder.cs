@@ -54,7 +54,7 @@ public static class SuikaSceneBuilder
         var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
 
         var unlit = AssetDatabase.LoadAssetAtPath<Material>(UnlitMaterialPath);
-        var cam = Object.FindFirstObjectByType<Camera>();
+        var cam = Object.FindAnyObjectByType<Camera>();
         if (cam != null)
         {
             cam.orthographic = true;
@@ -527,13 +527,13 @@ public static class SuikaSceneBuilder
         refs.resultList = Label(listPanel, "ResultList", "", font, 36, new Vector2(0, -22), new Vector2(380, 240), TextAlignmentOptions.TopLeft, top: true);
 
         var restartRow = Rect("RestartHint", card, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 75), new Vector2(560, 60));
-        var iconRect = Rect("Icon", restartRow, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(40, 0), new Vector2(46, 40));
+        var iconRect = Rect("Icon", restartRow, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(46, 40));
         var icon = iconRect.gameObject.AddComponent<Image>();
         icon.sprite = repeat;
         icon.color = Ink;
         icon.preserveAspect = true;
         icon.raycastTarget = false;
-        Label(restartRow, "Text", "PRESS  R  TO RESTART", font, 34, new Vector2(30, 0), new Vector2(460, 60), TextAlignmentOptions.Center);
+        Label(restartRow, "Text", "PRESS  R  TO RESTART", font, 30, new Vector2(40, 0), new Vector2(460, 60), TextAlignmentOptions.Center);
 
         overlay.gameObject.SetActive(false);
         return canvasGo;

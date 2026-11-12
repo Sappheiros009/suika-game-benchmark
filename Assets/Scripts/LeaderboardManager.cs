@@ -30,7 +30,7 @@ public sealed class LeaderboardManager : MonoBehaviour
     // 유지할 최대 기록 수입니다.
     [SerializeField, Min(1)] private int maxEntries = 5;
     // 방금 등록된 기록을 강조할 색입니다.
-    [SerializeField] private Color highlightColor = new Color(1f, .78f, .1f);
+    [SerializeField] private Color highlightColor = new Color(.88f, .36f, .08f);
 
     private readonly List<Entry> entries = new List<Entry>();
     private int nextOrder;
@@ -96,7 +96,7 @@ public sealed class LeaderboardManager : MonoBehaviour
 
     private string BuildText()
     {
-        if (entries.Count == 0) return "<alpha=#88>NO RECORDS YET";
+        if (entries.Count == 0) return "<size=70%><alpha=#88>NO RECORDS YET";
 
         var builder = new StringBuilder();
         string hex = ColorUtility.ToHtmlStringRGB(highlightColor);

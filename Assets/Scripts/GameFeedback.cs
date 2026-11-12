@@ -140,7 +140,9 @@ public sealed class GameFeedback : MonoBehaviour
     {
         Play(gameOverClip, 1f, 1f);
 
-        bool newBest = finalScore > 0 && finalScore > bestAtRoundStart;
+        // 이번 판에서 최고 기록을 넘었고, 그 값이 현재 최고 기록 자체일 때만 배지를 띄웁니다.
+        int best = ScoreManager.Instance != null ? ScoreManager.Instance.BestScore : finalScore;
+        bool newBest = finalScore > 0 && finalScore > bestAtRoundStart && finalScore >= best;
         if (newBestBadge != null) newBestBadge.SetActive(newBest);
         if (newBest) StartCoroutine(PlayDelayed(newBestClip, .45f));
 
