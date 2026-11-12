@@ -1,0 +1,22 @@
+# Unity YAML 에셋은 Unity 전용 병합 도구(UnityYAMLMerge)로 병합합니다.
+# 드라이버 등록은 Unity 설치 후 git config로 합니다. 등록 전에는 git 기본 병합을 씁니다.
+*.unity merge=unityyamlmerge
+*.prefab merge=unityyamlmerge
+*.asset merge=unityyamlmerge
+*.anim merge=unityyamlmerge
+*.controller merge=unityyamlmerge
+*.overrideController merge=unityyamlmerge
+*.mat merge=unityyamlmerge
+*.physicsMaterial2D merge=unityyamlmerge
+
+# 바이너리 파일은 줄바꿈 변환과 텍스트 병합을 하지 않습니다.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.psd binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.ttf binary
+*.otf binary
+*.mp4 binary
