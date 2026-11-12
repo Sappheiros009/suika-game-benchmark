@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -16,10 +16,27 @@ public static class SuikaSceneBuilder
     private const string Kenney = "Assets/ThirdParty/Kenney";
     private const string UnlitMaterialPath = "Assets/Art/Layout/SpriteUnlit.mat";
 
-    // 바구니 그림(1254px, Pixels Per Unit 200)에서 측정한 안쪽 경계입니다. 바구니 중심 기준 단위입니다.
-    private const float BasketInnerLeft = -2.28f;
-    private const float BasketInnerRight = 2.255f;
-    private const float BasketInnerFloor = -2.385f;
+    // 야시장 테마 그림(neon-watermelon-assets.zip)입니다.
+    private const string BackgroundSpritePath = "Assets/Art/Background/background_night_market.png";
+    private const string BasketSpritePath = "Assets/Art/Basket/basket_glass.png";
+    private const string LimitLineSpritePath = "Assets/Art/Guides/limit_line_dashed.png";
+    private const string DropGuideSpritePath = "Assets/Art/Guides/drop_guide_dotted.png";
+    private const string ScorePanelPath = "Assets/Art/Layout/panel_score.png";
+    private const string BestPanelPath = "Assets/Art/Layout/panel_best.png";
+    private const string NextPanelPath = "Assets/Art/Layout/panel_next.png";
+    private const string Top5PanelPath = "Assets/Art/Layout/panel_top5.png";
+    // BEST 판에서 제목 칸과 구분선을 잘라 내고 이어 붙인 진화 순서 띠용 판입니다.
+    private const string StripPanelPath = "Assets/Art/Layout/panel_strip.png";
+    private const string FredokaFontPath = "Assets/ThirdParty/Fredoka/Fredoka-SemiBold.ttf";
+    private const string FredokaAssetPath = "Assets/ThirdParty/Fredoka/Fredoka SDF.asset";
+    // 바구니·안내선·제한선 그림의 Pixels Per Unit입니다. 아래 측정값은 이 값 기준입니다.
+    private const float WorldPixelsPerUnit = 200f;
+
+    // 유리 바구니 그림(1254px, PPU 200)에서 측정한 안쪽 경계입니다. 바구니 중심 기준 단위입니다.
+    // 측정: 가운데에서 바깥으로 가며 불투명도 50%가 넘는 첫 픽셀(x 188·1066, 바닥 y 1141)을 경계로 봄.
+    private const float BasketInnerLeft = -2.195f;
+    private const float BasketInnerRight = 2.195f;
+    private const float BasketInnerFloor = -2.57f;
 
     // 화면 배치 값입니다.
     private const float BasketY = -1.15f;
@@ -27,8 +44,12 @@ public static class SuikaSceneBuilder
     private const float GameOverLineY = 1.35f;
     private const float CameraSize = 4.6f;
 
-    private static readonly Color Ink = new Color(.2f, .2f, .27f);
-    private static readonly Color Background = new Color(.965f, .906f, .784f);
+    // 배경 이미지를 넣기 전까지 보이는 카메라 배경색(야시장 그림의 어두운 보라)입니다.
+    private static readonly Color Background = new Color32(24, 16, 40, 255);
+    // 참고 이미지의 글자 색: 제목은 민트, 숫자·이름은 크림색, 강조는 판 테두리와 같은 분홍입니다.
+    private static readonly Color Mint = new Color32(127, 230, 190, 255);
+    private static readonly Color Cream = new Color32(247, 231, 198, 255);
+    private static readonly Color Pink = new Color32(255, 111, 145, 255);
 
     [MenuItem("Suika/Build Play Scene")]
     public static void Build()
@@ -40,8 +61,7 @@ public static class SuikaSceneBuilder
         }
 
         ConfigureImports();
-        // 가독성을 위해 TMP 기본 폰트(Liberation Sans SDF)를 씁니다. 제목과 숫자는 굵게 표시합니다.
-        var font = TMP_Settings.defaultFontAsset;
+        var font = CreateFontAsset();
         AddImpactSoundToFruitBase();
 
         if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -65,17 +85,19 @@ public static class SuikaSceneBuilder
             cam.transform.position = new Vector3(0, 0, -10);
         }
 
-        // 배경 이미지 자리: 스프라이트는 비워 두고 나중에 넣을 수 있게 합니다.
-        var background = new GameObject("Background (이미지 필요)");
+        // 배경 이미지: BackgroundFitter가 화면 비율에 맞춰 화면 전체를 덮도록 크기를 맞춥니다.
+        // 이미지가 없으면 비어 있는 채로 두고 카메라 배경색(남색)만 보입니다.
+        var background = new GameObject("Background");
         background.transform.position = new Vector3(0, 0, 5);
         var backgroundRenderer = background.AddComponent<SpriteRenderer>();
+        backgroundRenderer.sprite = AssetDatabase.LoadAssetAtPath<Sprite>(BackgroundSpritePath);
         backgroundRenderer.sortingOrder = -20;
         if (unlit != null) backgroundRenderer.sharedMaterial = unlit;
         var fitter = background.AddComponent<BackgroundFitter>();
         SetRef(fitter, "targetCamera", cam);
 
         // 바구니 그림과 실제 충돌 벽입니다. 벽은 그림 안쪽 경계에 맞추고 위로 길게 늘려 과일이 넘어가지 않게 합니다.
-        var basket = Sprite("Basket", Load<Sprite>("Assets/Art/Basket/basket_frame.png"), new Vector3(0, BasketY, 0), 3, unlit);
+        var basket = Sprite("Basket", Load<Sprite>(BasketSpritePath), new Vector3(0, BasketY, 0), 3, unlit);
         var walls = new GameObject("BasketColliders").transform;
         float floorY = BasketY + BasketInnerFloor;
         const float thickness = 1f;
@@ -87,15 +109,14 @@ public static class SuikaSceneBuilder
         var dropPoint = new GameObject("DropPoint").transform;
         dropPoint.position = new Vector3(0, DropY, 0);
 
-        // 낙하 위치 안내선: 낙하 높이부터 바닥까지 세로로 늘립니다. Collider는 넣지 않습니다.
-        var guideSprite = Load<Sprite>("Assets/Art/Guides/drop_guide.png");
+        // 낙하 위치 안내선(흰 점선): 낙하 높이부터 바닥까지 세로로 늘립니다. Collider는 넣지 않습니다.
+        var guideSprite = Load<Sprite>(DropGuideSpritePath);
         var guide = Sprite("DropGuide", guideSprite, new Vector3(0, (DropY + floorY) * .5f, 0), -1, unlit);
         if (guideSprite != null)
             guide.transform.localScale = new Vector3(1, (DropY - floorY) / guideSprite.bounds.size.y, 1);
-        guide.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, .85f);
 
-        // 게임오버 제한선: Transform y가 실제 판정 높이입니다. Collider는 넣지 않습니다.
-        var lineSprite = Load<Sprite>("Assets/Art/Guides/game_over_line.png");
+        // 게임오버 제한선: 분홍 점선입니다. Transform y가 실제 판정 높이이며 Collider는 넣지 않습니다.
+        var lineSprite = Load<Sprite>(LimitLineSpritePath);
         var line = Sprite("GameOverLine", lineSprite, new Vector3((BasketInnerLeft + BasketInnerRight) * .5f, GameOverLineY, 0), 2, unlit);
         if (lineSprite != null)
             line.transform.localScale = new Vector3((BasketInnerRight - BasketInnerLeft) / lineSprite.bounds.size.x, 1, 1);
@@ -163,6 +184,10 @@ public static class SuikaSceneBuilder
         SetRef(leaderboard, "gameOverManager", gameOver);
         SetRef(leaderboard, "resultListText", refs.resultList);
         SetRef(leaderboard, "hudListText", refs.hudList);
+        // 리더보드 판 그림의 칸 간격(약 56px)과 게임오버 카드의 줄 간격(38px)에 맞춥니다. 강조색은 판 테두리와 같은 분홍입니다.
+        SetString(leaderboard, "hudTextPrefix", "<line-height=56>");
+        SetString(leaderboard, "resultTextPrefix", "<line-height=38>");
+        SetColor(leaderboard, "highlightColor", Pink);
 
         SetRef(dropPreview, "dropManager", dropManager);
         SetRef(dropPreview, "gameOverManager", gameOver);
@@ -206,6 +231,20 @@ public static class SuikaSceneBuilder
         SpriteImport(Kenney + "/UI/star.png", Vector4.zero);
         SpriteImport(Kenney + "/UI/icon_repeat.png", Vector4.zero);
 
+        // 야시장 테마 판. 화면의 판은 원래 비율 그대로(Simple) 쓰고, NEXT 판만 게임오버 카드에서 9-slice로 늘립니다.
+        // NEXT 판의 테두리 값은 제목 칸(위 30%)과 안쪽 틀 모서리가 늘어나지 않도록 잰 값입니다. (왼쪽, 아래, 오른쪽, 위)
+        SpriteImport(ScorePanelPath, Vector4.zero);
+        SpriteImport(BestPanelPath, Vector4.zero);
+        SpriteImport(NextPanelPath, new Vector4(180, 200, 180, 380));
+        SpriteImport(Top5PanelPath, Vector4.zero);
+        // 진화 순서 판은 세로로 길게 9-slice 합니다. 위 290px(둥근 모서리와 마름모 장식), 아래 240px(아래 모서리 홈),
+        // 좌우 280px(마름모 가로 범위)을 테두리로 두어 장식은 그대로 두고 곧은 선 부분만 늘어나게 합니다.
+        SpriteImport(StripPanelPath, new Vector4(280, 240, 280, 290));
+        SpriteImport(BasketSpritePath, Vector4.zero, WorldPixelsPerUnit);
+        SpriteImport(LimitLineSpritePath, Vector4.zero, WorldPixelsPerUnit);
+        SpriteImport(DropGuideSpritePath, Vector4.zero, WorldPixelsPerUnit);
+        SpriteImport(BackgroundSpritePath, Vector4.zero);
+
         foreach (var name in new[] { "star_06", "light_02", "circle_05", "magic_02" })
         {
             var path = Kenney + "/Particles/" + name + ".png";
@@ -221,7 +260,7 @@ public static class SuikaSceneBuilder
         }
     }
 
-    private static void SpriteImport(string path, Vector4 border)
+    private static void SpriteImport(string path, Vector4 border, float pixelsPerUnit = 100f)
     {
         if (!(AssetImporter.GetAtPath(path) is TextureImporter importer))
         {
@@ -232,8 +271,60 @@ public static class SuikaSceneBuilder
         importer.spriteImportMode = SpriteImportMode.Single;
         importer.alphaIsTransparency = true;
         importer.mipmapEnabled = false;
+        importer.spritePixelsPerUnit = pixelsPerUnit;
         importer.spriteBorder = border;
         importer.SaveAndReimport();
+    }
+
+    private static TMP_FontAsset CreateFontAsset()
+    {
+        // Fredoka SemiBold(OFL, 고정 굵기 600)로 SDF 폰트 에셋을 만듭니다.
+        const string fontPath = FredokaFontPath;
+        const string assetPath = FredokaAssetPath;
+
+        var existing = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(assetPath);
+        if (existing != null) return existing;
+
+        var source = AssetDatabase.LoadAssetAtPath<Font>(fontPath);
+        var fallback = TMP_Settings.defaultFontAsset;
+        if (source == null) return fallback;
+
+        try
+        {
+            var asset = TMP_FontAsset.CreateFontAsset(source);
+            if (asset == null) return fallback;
+            asset.name = "Fredoka SDF";
+            AssetDatabase.CreateAsset(asset, assetPath);
+            if (asset.material != null)
+            {
+                asset.material.name = asset.name + " Material";
+                AssetDatabase.AddObjectToAsset(asset.material, asset);
+            }
+            if (asset.atlasTextures != null)
+            {
+                for (int i = 0; i < asset.atlasTextures.Length; i++)
+                {
+                    var texture = asset.atlasTextures[i];
+                    if (texture == null) continue;
+                    texture.name = asset.name + " Atlas " + i;
+                    AssetDatabase.AddObjectToAsset(texture, asset);
+                }
+            }
+            // Fredoka에 없는 글자는 TMP 기본 폰트로 대신 그립니다.
+            if (fallback != null)
+            {
+                if (asset.fallbackFontAssetTable == null) asset.fallbackFontAssetTable = new System.Collections.Generic.List<TMP_FontAsset>();
+                asset.fallbackFontAssetTable.Add(fallback);
+            }
+            EditorUtility.SetDirty(asset);
+            AssetDatabase.SaveAssets();
+            return asset;
+        }
+        catch (System.Exception exception)
+        {
+            Debug.LogWarning("Fredoka 폰트 에셋을 만들지 못해 기본 폰트를 사용합니다: " + exception.Message);
+            return fallback;
+        }
     }
 
     private static void AddImpactSoundToFruitBase()
@@ -276,6 +367,7 @@ public static class SuikaSceneBuilder
         box.size = size;
         return box;
     }
+
 
     private static ParticleSystem Particles(string name, Transform parent, string texture, System.Action<ParticleSystem> configure)
     {
@@ -394,6 +486,21 @@ public static class SuikaSceneBuilder
         return material;
     }
 
+    private static TMP_Text Tint(TMP_Text label, Color color)
+    {
+        label.color = color;
+        return label;
+    }
+
+    // 과일 프리팹의 몸통(Body) 그림입니다. 진화 순서 띠에 씁니다.
+    private static Sprite FruitBody(string fruit)
+    {
+        var prefab = Load<GameObject>("Assets/Prefabs/Fruits/" + fruit + ".prefab");
+        var body = prefab != null ? prefab.transform.Find("Body") : null;
+        var renderer = body != null ? body.GetComponent<SpriteRenderer>() : null;
+        return renderer != null ? renderer.sprite : null;
+    }
+
     // ---------- UI ----------
 
     private struct UiRefs
@@ -404,11 +511,16 @@ public static class SuikaSceneBuilder
         public RectTransform card;
     }
 
+    // 판 배치는 참고 이미지(1672x941)의 비율을 1920x1080 캔버스로 옮긴 값입니다.
+    // 판 안 글자 위치는 각 판 그림에서 잰 칸 비율(예: SCORE 제목 칸 10~39%, 숫자 칸 39~79%)로 정했습니다.
     private static GameObject BuildUI(TMP_FontAsset font, out UiRefs refs)
     {
         refs = new UiRefs();
-        var panelGrey = Load<Sprite>(Kenney + "/UI/panel_grey.png");
-        var panelYellow = Load<Sprite>(Kenney + "/UI/panel_yellow.png");
+        var scorePanelSprite = Load<Sprite>(ScorePanelPath);
+        var bestPanelSprite = Load<Sprite>(BestPanelPath);
+        var nextPanelSprite = Load<Sprite>(NextPanelPath);
+        var top5PanelSprite = Load<Sprite>(Top5PanelPath);
+        var stripPanelSprite = Load<Sprite>(StripPanelPath);
         var star = Load<Sprite>(Kenney + "/UI/star.png");
         var repeat = Load<Sprite>(Kenney + "/UI/icon_repeat.png");
 
@@ -422,31 +534,64 @@ public static class SuikaSceneBuilder
         scaler.matchWidthOrHeight = .5f;
         var root = canvasGo.transform;
 
-        // 왼쪽: 현재 점수, 최고 점수, 조작법
-        var scorePanel = Panel("ScorePanel", root, panelGrey, new Vector2(0, 1), new Vector2(110, -90), new Vector2(400, 230));
-        Label(scorePanel, "Label", "SCORE", font, 34, new Vector2(0, -24), new Vector2(360, 50), TextAlignmentOptions.Center, top: true);
-        refs.score = Label(scorePanel, "ScoreText", "0000", font, 100, new Vector2(0, -22), new Vector2(360, 130), TextAlignmentOptions.Center);
+        // 왼쪽: 현재 점수(300x190), 최고 점수(270x124). 배경 그림의 네온 수박 간판 아래에 둡니다.
+        var scorePanel = Panel("ScorePanel", root, scorePanelSprite, new Vector2(0, 1), new Vector2(190, -262), new Vector2(300, 190));
+        Tint(Label(scorePanel, "Label", "SCORE", font, 30, new Vector2(0, -24), new Vector2(260, 44), TextAlignmentOptions.Center, top: true), Mint);
+        refs.score = Tint(Label(scorePanel, "ScoreText", "0000", font, 58, new Vector2(0, -72), new Vector2(240, 80), TextAlignmentOptions.Center, top: true), Cream);
 
-        var bestPanel = Panel("BestPanel", root, panelGrey, new Vector2(0, 1), new Vector2(110, -345), new Vector2(400, 170));
-        Label(bestPanel, "Label", "BEST", font, 30, new Vector2(0, -20), new Vector2(360, 44), TextAlignmentOptions.Center, top: true);
-        refs.best = Label(bestPanel, "BestScoreText", "0000", font, 64, new Vector2(0, -18), new Vector2(360, 90), TextAlignmentOptions.Center);
+        var bestPanel = Panel("BestPanel", root, bestPanelSprite, new Vector2(0, 1), new Vector2(205, -470), new Vector2(270, 124));
+        Tint(Label(bestPanel, "Label", "BEST", font, 24, new Vector2(0, -13), new Vector2(230, 34), TextAlignmentOptions.Center, top: true), Mint);
+        refs.best = Tint(Label(bestPanel, "BestScoreText", "0000", font, 42, new Vector2(0, -51), new Vector2(230, 54), TextAlignmentOptions.Center, top: true), Cream);
 
-        var howTo = Panel("HowToPanel", root, panelGrey, new Vector2(0, 0), new Vector2(110, 90), new Vector2(400, 210));
-        var howText = Label(howTo, "Text", "MOVE   A D / ARROWS\nDROP   SPACE\nRESTART   R", font, 28, Vector2.zero, new Vector2(350, 170), TextAlignmentOptions.Left);
-        howText.lineSpacing = 22;
+        // 왼쪽 아래: 리더보드(300x417, TOP 5 판 비율 그대로). 참고한 수박게임처럼 점수 판 아래에 둡니다.
+        // 판 그림의 다섯 칸 간격은 높이의 13.55%(약 56px)이고, 첫 칸 가운데는 위에서 24.8%(약 103px)입니다.
+        var rankPanel = Panel("LeaderboardPanel", root, top5PanelSprite, new Vector2(0, 1), new Vector2(190, -610), new Vector2(300, 417));
+        // 제목이 양옆 마름모 장식에 닿지 않도록 20pt로 둡니다.
+        Tint(Label(rankPanel, "Label", "LEADERBOARD", font, 20, new Vector2(0, -28), new Vector2(200, 34), TextAlignmentOptions.Center, top: true), Mint);
+        // 안쪽 틀 왼쪽 선과 띄우려고 글자 칸을 오른쪽으로 10px 옮깁니다.
+        refs.hudList = Tint(Label(rankPanel, "RankList", "", font, 26, new Vector2(10, -85), new Vector2(210, 300), TextAlignmentOptions.TopLeft, top: true), Cream);
 
-        // 오른쪽: 다음 과일, 상위 5개 기록
-        var nextPanel = Panel("NextPanel", root, panelGrey, new Vector2(1, 1), new Vector2(-110, -90), new Vector2(400, 330));
-        Label(nextPanel, "Label", "NEXT", font, 34, new Vector2(0, -24), new Vector2(360, 50), TextAlignmentOptions.Center, top: true);
-        var imageRect = Rect("NextFruitImage", nextPanel, new Vector2(.5f, .5f), new Vector2(.5f, .5f), new Vector2(0, -2), new Vector2(180, 180));
+        // 오른쪽(가운데 x=1600): 다음 과일(260x250), 그 아래 세로 진화 순서 판(200x605). 두 열의 아래 끝을 약 1000px로 맞춥니다.
+        var nextPanel = Panel("NextPanel", root, nextPanelSprite, new Vector2(1, 1), new Vector2(-190, -125), new Vector2(260, 250));
+        Tint(Label(nextPanel, "Label", "NEXT", font, 30, new Vector2(0, -25), new Vector2(220, 40), TextAlignmentOptions.Center, top: true), Mint);
+        var imageRect = Rect("NextFruitImage", nextPanel, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -80), new Vector2(96, 96));
         refs.nextImage = imageRect.gameObject.AddComponent<Image>();
         refs.nextImage.preserveAspect = true;
         refs.nextImage.raycastTarget = false;
-        refs.nextName = Label(nextPanel, "NextFruitName", "", font, 32, new Vector2(0, 30), new Vector2(360, 48), TextAlignmentOptions.Center, bottom: true);
+        // 채점 5번(이미지와 이름 함께 갱신)을 위해 참고 이미지에는 없는 이름을 안쪽 틀 아래에 둡니다.
+        refs.nextName = Tint(Label(nextPanel, "NextFruitName", "", font, 22, new Vector2(0, -180), new Vector2(200, 30), TextAlignmentOptions.Center, top: true), Cream);
 
-        var rankPanel = Panel("RankPanel", root, panelGrey, new Vector2(1, 1), new Vector2(-110, -445), new Vector2(400, 360));
-        Label(rankPanel, "Label", "TOP 5", font, 34, new Vector2(0, -24), new Vector2(360, 50), TextAlignmentOptions.Center, top: true);
-        refs.hudList = Label(rankPanel, "RankList", "", font, 34, new Vector2(0, -84), new Vector2(300, 260), TextAlignmentOptions.TopLeft, top: true);
+        // 세로 진화 순서 판: 9-slice 테두리를 1/6로 줄여 그려 모서리·마름모가 약 47px 크기로 보입니다.
+        // NEXT 판과 가운데(x=1600)를 맞춥니다: 오른쪽 끝 1700px.
+        var stripPanel = Panel("EvolutionStrip", root, stripPanelSprite, new Vector2(1, 1), new Vector2(-220, -395), new Vector2(200, 605), sliced: true, ppuMultiplier: 6f);
+        string[] order = { "cherry", "mandarin", "apple", "melon", "watermelon" };
+        const float arrowGap = 24f;
+        // 체리부터 수박까지 위에서 아래로, 진화할수록 커지게(60~100px) 놓고 사이에 아래 방향 화살표를 둡니다.
+        // 과일 그림에 투명 여백이 있어 칸 크기보다 작아 보이므로 판 안쪽 높이를 거의 다 씁니다.
+        float[] sizes = { 60, 70, 80, 90, 100 };
+        float total = arrowGap * (order.Length - 1);
+        foreach (var s in sizes) total += s;
+        // 판 안쪽(위 테두리 약 48px 아래 ~ 아래 테두리 약 40px 위)의 가운데에 세로로 모읍니다.
+        float y = 48 + (605 - 48 - 40 - total) * .5f;
+        for (int i = 0; i < order.Length; i++)
+        {
+            var icon = Rect("Fruit_" + order[i], stripPanel, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -y), new Vector2(sizes[i], sizes[i]));
+            var iconImage = icon.gameObject.AddComponent<Image>();
+            iconImage.sprite = FruitBody(order[i]);
+            iconImage.preserveAspect = true;
+            iconImage.raycastTarget = false;
+            y += sizes[i];
+            if (i < order.Length - 1)
+            {
+                // 기존 ">" 글자를 시계 방향으로 90도 돌려 아래를 가리키게 합니다.
+                var arrow = Tint(Label(stripPanel, "Arrow" + i, ">", font, 24, new Vector2(0, -y), new Vector2(arrowGap, arrowGap), TextAlignmentOptions.Center, top: true), Mint);
+                // 칸 가운데를 기준으로 돌려야 제자리에서 회전합니다.
+                arrow.rectTransform.pivot = new Vector2(.5f, .5f);
+                arrow.rectTransform.anchoredPosition = new Vector2(0, -(y + arrowGap * .5f));
+                arrow.rectTransform.localEulerAngles = new Vector3(0, 0, -90);
+                y += arrowGap;
+            }
+        }
 
         // 게임오버 패널
         var overlay = Rect("GameOverPanel", root, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
@@ -454,37 +599,39 @@ public static class SuikaSceneBuilder
         overlay.anchorMax = Vector2.one;
         overlay.offsetMin = overlay.offsetMax = Vector2.zero;
         var dim = overlay.gameObject.AddComponent<Image>();
-        dim.color = new Color(.08f, .07f, .12f, .68f);
+        // 게임오버 순간 제한선 위로 넘친 과일이 보이도록 어둡게 하는 정도를 낮춥니다.
+        dim.color = new Color(.08f, .05f, .1f, .5f);
         dim.raycastTarget = false;
         refs.gameOverPanel = overlay.gameObject;
 
-        var card = Panel("Card", overlay, panelYellow, new Vector2(.5f, .5f), Vector2.zero, new Vector2(720, 800), pivot: new Vector2(.5f, .5f));
+        // 카드는 제한선(화면 위에서 약 380px) 아래에 두어, 게임오버 순간 선을 넘은 과일과 제한선이 가려지지 않게 합니다.
+        // NEXT 판을 9-slice로 늘려 쓰며, 테두리를 1/2.7로 줄여 제목 칸 약 141px, 옆 67px, 아래 74px이 됩니다.
+        var card = Panel("Card", overlay, nextPanelSprite, new Vector2(.5f, .5f), new Vector2(0, -200), new Vector2(720, 640), pivot: new Vector2(.5f, .5f), sliced: true, ppuMultiplier: 2.7f);
         refs.card = card;
-        Label(card, "Title", "GAME OVER", font, 84, new Vector2(0, -70), new Vector2(660, 110), TextAlignmentOptions.Center, top: true);
-        refs.finalScore = Label(card, "FinalScoreText", "SCORE  0000", font, 54, new Vector2(0, -170), new Vector2(660, 80), TextAlignmentOptions.Center, top: true);
+        Tint(Label(card, "Title", "GAME OVER", font, 56, new Vector2(0, -35), new Vector2(600, 70), TextAlignmentOptions.Center, top: true), Pink);
+        refs.finalScore = Tint(Label(card, "FinalScoreText", "SCORE  0000", font, 44, new Vector2(0, -157), new Vector2(600, 56), TextAlignmentOptions.Center, top: true), Cream);
 
-        var badge = Rect("NewBest", card, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -240), new Vector2(420, 70));
-        var starRect = Rect("Star", badge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(20, 0), new Vector2(64, 60));
+        var badge = Rect("NewBest", card, new Vector2(.5f, 1), new Vector2(.5f, 1), new Vector2(0, -208), new Vector2(360, 60));
+        var starRect = Rect("Star", badge, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(30, 0), new Vector2(50, 46));
         var starImage = starRect.gameObject.AddComponent<Image>();
         starImage.sprite = star;
         starImage.preserveAspect = true;
         starImage.raycastTarget = false;
-        var badgeText = Label(badge, "Text", "NEW BEST!", font, 42, new Vector2(40, 0), new Vector2(320, 70), TextAlignmentOptions.Center);
-        badgeText.color = new Color(.85f, .25f, .15f);
+        Tint(Label(badge, "Text", "NEW BEST!", font, 34, new Vector2(30, 0), new Vector2(260, 60), TextAlignmentOptions.Center), Pink);
         refs.newBest = badge.gameObject;
 
-        Label(card, "RankingTitle", "RANKING", font, 34, new Vector2(0, -320), new Vector2(560, 50), TextAlignmentOptions.Center, top: true);
-        var listPanel = Panel("ListPanel", card, panelGrey, new Vector2(.5f, 1), new Vector2(0, -360), new Vector2(520, 270), pivot: new Vector2(.5f, 1));
-        refs.resultList = Label(listPanel, "ResultList", "", font, 36, new Vector2(0, -22), new Vector2(380, 240), TextAlignmentOptions.TopLeft, top: true);
+        Tint(Label(card, "RankingTitle", "RANKING", font, 26, new Vector2(0, -267), new Vector2(400, 36), TextAlignmentOptions.Center, top: true), Mint);
+        refs.resultList = Tint(Label(card, "ResultList", "", font, 26, new Vector2(0, -305), new Vector2(300, 200), TextAlignmentOptions.TopLeft, top: true), Cream);
 
-        var restartRow = Rect("RestartHint", card, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 75), new Vector2(560, 60));
-        var iconRect = Rect("Icon", restartRow, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(10, 0), new Vector2(46, 40));
-        var icon = iconRect.gameObject.AddComponent<Image>();
-        icon.sprite = repeat;
-        icon.color = Ink;
-        icon.preserveAspect = true;
-        icon.raycastTarget = false;
-        Label(restartRow, "Text", "PRESS  R  TO RESTART", font, 30, new Vector2(40, 0), new Vector2(460, 60), TextAlignmentOptions.Center);
+        // 아이콘과 글자가 붙어 보이도록 줄 폭을 380px로 줄였습니다.
+        var restartRow = Rect("RestartHint", card, new Vector2(.5f, 0), new Vector2(.5f, 0), new Vector2(0, 80), new Vector2(380, 50));
+        var iconRect = Rect("Icon", restartRow, new Vector2(0, .5f), new Vector2(0, .5f), new Vector2(0, 0), new Vector2(40, 36));
+        var restartIcon = iconRect.gameObject.AddComponent<Image>();
+        restartIcon.sprite = repeat;
+        restartIcon.color = Mint;
+        restartIcon.preserveAspect = true;
+        restartIcon.raycastTarget = false;
+        Tint(Label(restartRow, "Text", "PRESS  R  TO RESTART", font, 24, new Vector2(24, 0), new Vector2(330, 50), TextAlignmentOptions.Center), Cream);
 
         overlay.gameObject.SetActive(false);
         return canvasGo;
@@ -502,13 +649,16 @@ public static class SuikaSceneBuilder
         return rect;
     }
 
-    private static RectTransform Panel(string name, Transform parent, Sprite sprite, Vector2 anchor, Vector2 position, Vector2 size, Vector2? pivot = null)
+    // sliced가 false면 그림을 원래 비율 그대로(Simple) 그리고, true면 스프라이트 테두리 값으로 9-slice 합니다.
+    // ppuMultiplier가 클수록 9-slice 테두리가 작게 그려집니다.
+    private static RectTransform Panel(string name, Transform parent, Sprite sprite, Vector2 anchor, Vector2 position, Vector2 size, Vector2? pivot = null, bool sliced = false, float ppuMultiplier = 1f)
     {
         var rect = Rect(name, parent, anchor, pivot ?? anchor, position, size);
         var image = rect.gameObject.AddComponent<Image>();
         image.sprite = sprite;
-        image.type = sprite != null && sprite.border != Vector4.zero ? Image.Type.Sliced : Image.Type.Simple;
-        image.pixelsPerUnitMultiplier = .45f;
+        image.type = sliced ? Image.Type.Sliced : Image.Type.Simple;
+        image.preserveAspect = !sliced;
+        image.pixelsPerUnitMultiplier = ppuMultiplier;
         image.raycastTarget = false;
         return rect;
     }
@@ -521,21 +671,12 @@ public static class SuikaSceneBuilder
         if (font != null) label.font = font;
         label.text = text;
         label.fontSize = size;
-        label.color = Ink;
+        label.color = Cream;
         label.alignment = alignment;
-        label.fontStyle = IsBold(name, parent) ? FontStyles.Bold : FontStyles.Normal;
         label.textWrappingMode = TextWrappingModes.NoWrap;
         label.overflowMode = TextOverflowModes.Overflow;
         label.raycastTarget = false;
         return label;
-    }
-
-    // 제목(패널 이름, GAME OVER, RANKING)과 점수 숫자, 최고 기록 배지는 굵게, 조작법·목록·과일 이름은 보통 굵기입니다.
-    private static readonly string[] BoldNames = { "Label", "ScoreText", "BestScoreText", "Title", "FinalScoreText", "RankingTitle" };
-
-    private static bool IsBold(string name, Transform parent)
-    {
-        return System.Array.IndexOf(BoldNames, name) >= 0 || (name == "Text" && parent != null && parent.name == "NewBest");
     }
 
     // ---------- 공통 ----------
@@ -559,6 +700,32 @@ public static class SuikaSceneBuilder
             return;
         }
         property.objectReferenceValue = value;
+        serialized.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void SetString(Object target, string field, string value)
+    {
+        var serialized = new SerializedObject(target);
+        var property = serialized.FindProperty(field);
+        if (property == null)
+        {
+            Debug.LogError($"[Suika] {target.GetType().Name}.{field} 필드를 찾지 못했습니다.");
+            return;
+        }
+        property.stringValue = value;
+        serialized.ApplyModifiedPropertiesWithoutUndo();
+    }
+
+    private static void SetColor(Object target, string field, Color value)
+    {
+        var serialized = new SerializedObject(target);
+        var property = serialized.FindProperty(field);
+        if (property == null)
+        {
+            Debug.LogError($"[Suika] {target.GetType().Name}.{field} 필드를 찾지 못했습니다.");
+            return;
+        }
+        property.colorValue = value;
         serialized.ApplyModifiedPropertiesWithoutUndo();
     }
 

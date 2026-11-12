@@ -1,0 +1,1315 @@
+fileFormatVersion: 2
+guid: 1fe7912500ca710429b376e14e1099a3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7895560518396447834
+    second: drop_guide_dotted_0
+  - first:
+      213: -2824047066152359521
+    second: drop_guide_dotted_1
+  - first:
+      213: 2928852434211349753
+    second: drop_guide_dotted_2
+  - first:
+      213: 7023424460114158636
+    second: drop_guide_dotted_3
+  - first:
+      213: -1271714951811190255
+    second: drop_guide_dotted_4
+  - first:
+      213: -3565701301527668849
+    second: drop_guide_dotted_5
+  - first:
+      213: 8593048297403512560
+    second: drop_guide_dotted_6
+  - first:
+      213: -3971532232861964482
+    second: drop_guide_dotted_7
+  - first:
+      213: -3619664553317570242
+    second: drop_guide_dotted_8
+  - first:
+      213: -8028785417513497048
+    second: drop_guide_dotted_9
+  - first:
+      213: -25445714872782289
+    second: drop_guide_dotted_10
+  - first:
+      213: 1274918713985869843
+    second: drop_guide_dotted_11
+  - first:
+      213: -5145509708606666809
+    second: drop_guide_dotted_12
+  - first:
+      213: -1539109334463455046
+    second: drop_guide_dotted_13
+  - first:
+      213: 3871650733128578339
+    second: drop_guide_dotted_14
+  - first:
+      213: 5459556324737553753
+    second: drop_guide_dotted_15
+  - first:
+      213: 6652370455814669101
+    second: drop_guide_dotted_16
+  - first:
+      213: 1173061492560495803
+    second: drop_guide_dotted_17
+  - first:
+      213: -5059842111287991310
+    second: drop_guide_dotted_18
+  - first:
+      213: -958426594936050707
+    second: drop_guide_dotted_19
+  - first:
+      213: -1650047445007908686
+    second: drop_guide_dotted_20
+  - first:
+      213: -1032802012603039767
+    second: drop_guide_dotted_21
+  - first:
+      213: -5367924032814457568
+    second: drop_guide_dotted_22
+  - first:
+      213: 7723221142038554401
+    second: drop_guide_dotted_23
+  - first:
+      213: 5127872310897618470
+    second: drop_guide_dotted_24
+  - first:
+      213: -3965513176721481717
+    second: drop_guide_dotted_25
+  - first:
+      213: -5059633813202160063
+    second: drop_guide_dotted_26
+  - first:
+      213: 3095881159527121872
+    second: drop_guide_dotted_27
+  - first:
+      213: 5252768865380193538
+    second: drop_guide_dotted_28
+  - first:
+      213: 7186141640032241541
+    second: drop_guide_dotted_29
+  - first:
+      213: 2294707421840971554
+    second: drop_guide_dotted_30
+  - first:
+      213: -8111890984969316837
+    second: drop_guide_dotted_31
+  - first:
+      213: 8397850223386929244
+    second: drop_guide_dotted_32
+  - first:
+      213: -8424519789025710061
+    second: drop_guide_dotted_33
+  - first:
+      213: 3421613322624443723
+    second: drop_guide_dotted_34
+  - first:
+      213: -3228065962391102938
+    second: drop_guide_dotted_35
+  - first:
+      213: -6506298645534587704
+    second: drop_guide_dotted_36
+  - first:
+      213: 2640944004902155152
+    second: drop_guide_dotted_37
+  - first:
+      213: 4977741542123208595
+    second: drop_guide_dotted_38
+  - first:
+      213: 2800912684823947835
+    second: drop_guide_dotted_39
+  - first:
+      213: 4479639258773591439
+    second: drop_guide_dotted_40
+  - first:
+      213: -1997520414550400869
+    second: drop_guide_dotted_41
+  - first:
+      213: -5019661847724918253
+    second: drop_guide_dotted_42
+  - first:
+      213: 8987456409346036735
+    second: drop_guide_dotted_43
+  - first:
+      213: 4265673427873909109
+    second: drop_guide_dotted_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: drop_guide_dotted_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1306
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5c8e91857aa29d60800000000000000
+      internalID: 7895560518396447834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1277
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f992101e728fec8d0800000000000000
+      internalID: -2824047066152359521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_2
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1248
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f4a4bc65cf55a820800000000000000
+      internalID: 2928852434211349753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_3
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1219
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c24e4e3b557387160800000000000000
+      internalID: 7023424460114158636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_4
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1190
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112bdb93df5f95ee0800000000000000
+      internalID: -1271714951811190255
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_5
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1161
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f879b43ee85148ec0800000000000000
+      internalID: -3565701301527668849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_6
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1132
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f6f28806e3a04770800000000000000
+      internalID: 8593048297403512560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_7
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1103
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e37af3ee97842e8c0800000000000000
+      internalID: -3971532232861964482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_8
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1074
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e39ee6d344e54cdc0800000000000000
+      internalID: -3619664553317570242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_9
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1045
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82e854b7336049090800000000000000
+      internalID: -8028785417513497048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_10
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 1016
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f22b3f3d14995aff0800000000000000
+      internalID: -25445714872782289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_11
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 987
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31820a8c0db61b110800000000000000
+      internalID: 1274918713985869843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_12
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 958
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c70d2e9e2a7798b0800000000000000
+      internalID: -5145509708606666809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_13
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 929
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab061d0073cf3aae0800000000000000
+      internalID: -1539109334463455046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_14
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 900
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 325728234dddab530800000000000000
+      internalID: 3871650733128578339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_15
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 871
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95518372d8d34cb40800000000000000
+      internalID: 5459556324737553753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_16
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 842
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d23032d0fa7f15c50800000000000000
+      internalID: 6652370455814669101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_17
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 813
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb402cb563d874010800000000000000
+      internalID: 1173061492560495803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_18
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 784
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f3ed117864d7c9b0800000000000000
+      internalID: -5059842111287991310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_19
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 755
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: debac81071cf2b2f0800000000000000
+      internalID: -958426594936050707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_20
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 726
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b043c1579ad919e0800000000000000
+      internalID: -1650047445007908686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_21
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 697
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9efbc73aa00caa1f0800000000000000
+      internalID: -1032802012603039767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_22
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 668
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02ddfca588d4185b0800000000000000
+      internalID: -5367924032814457568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_23
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 639
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 127aef495b46e2b60800000000000000
+      internalID: 7723221142038554401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_24
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 610
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62e2d98b2bcd92740800000000000000
+      internalID: 5127872310897618470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_25
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 581
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b00a265a6caa7f8c0800000000000000
+      internalID: -3965513176721481717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_26
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 552
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 146b78e9ad198c9b0800000000000000
+      internalID: -5059633813202160063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_27
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 523
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d3407c0387c6fa20800000000000000
+      internalID: 3095881159527121872
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_28
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 494
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 205d734e37595e840800000000000000
+      internalID: 5252768865380193538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_29
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 465
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 587c3cf6fbd4ab360800000000000000
+      internalID: 7186141640032241541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_30
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 436
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22798460e3078df10800000000000000
+      internalID: 2294707421840971554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_31
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 407
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b16d538b026cc6f80800000000000000
+      internalID: -8111890984969316837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_32
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 378
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c58a9e1d8482b8470800000000000000
+      internalID: 8397850223386929244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_33
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 349
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 310bfdb03e7161b80800000000000000
+      internalID: -8424519789025710061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_34
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 320
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4526cd30330c7f20800000000000000
+      internalID: 3421613322624443723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_35
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 291
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62a16283c1b9333d0800000000000000
+      internalID: -3228065962391102938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_36
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 262
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c44e4e8adbf4b5a0800000000000000
+      internalID: -6506298645534587704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_37
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 233
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 093f3e3849486a420800000000000000
+      internalID: 2640944004902155152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_38
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 204
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39f75f13f8d741540800000000000000
+      internalID: 4977741542123208595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_39
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 175
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3a21d93f37ded620800000000000000
+      internalID: 2800912684823947835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_40
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 146
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f851815fb20ea2e30800000000000000
+      internalID: 4479639258773591439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_41
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 117
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b90e12b24c16744e0800000000000000
+      internalID: -1997520414550400869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_42
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 88
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31a76c11524965ab0800000000000000
+      internalID: -5019661847724918253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_43
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 59
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff3d0699cfbd9bc70800000000000000
+      internalID: 8987456409346036735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: drop_guide_dotted_44
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 30
+        width: 11
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5794f34d167b23b30800000000000000
+      internalID: 4265673427873909109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      drop_guide_dotted_0: 7895560518396447834
+      drop_guide_dotted_1: -2824047066152359521
+      drop_guide_dotted_10: -25445714872782289
+      drop_guide_dotted_11: 1274918713985869843
+      drop_guide_dotted_12: -5145509708606666809
+      drop_guide_dotted_13: -1539109334463455046
+      drop_guide_dotted_14: 3871650733128578339
+      drop_guide_dotted_15: 5459556324737553753
+      drop_guide_dotted_16: 6652370455814669101
+      drop_guide_dotted_17: 1173061492560495803
+      drop_guide_dotted_18: -5059842111287991310
+      drop_guide_dotted_19: -958426594936050707
+      drop_guide_dotted_2: 2928852434211349753
+      drop_guide_dotted_20: -1650047445007908686
+      drop_guide_dotted_21: -1032802012603039767
+      drop_guide_dotted_22: -5367924032814457568
+      drop_guide_dotted_23: 7723221142038554401
+      drop_guide_dotted_24: 5127872310897618470
+      drop_guide_dotted_25: -3965513176721481717
+      drop_guide_dotted_26: -5059633813202160063
+      drop_guide_dotted_27: 3095881159527121872
+      drop_guide_dotted_28: 5252768865380193538
+      drop_guide_dotted_29: 7186141640032241541
+      drop_guide_dotted_3: 7023424460114158636
+      drop_guide_dotted_30: 2294707421840971554
+      drop_guide_dotted_31: -8111890984969316837
+      drop_guide_dotted_32: 8397850223386929244
+      drop_guide_dotted_33: -8424519789025710061
+      drop_guide_dotted_34: 3421613322624443723
+      drop_guide_dotted_35: -3228065962391102938
+      drop_guide_dotted_36: -6506298645534587704
+      drop_guide_dotted_37: 2640944004902155152
+      drop_guide_dotted_38: 4977741542123208595
+      drop_guide_dotted_39: 2800912684823947835
+      drop_guide_dotted_4: -1271714951811190255
+      drop_guide_dotted_40: 4479639258773591439
+      drop_guide_dotted_41: -1997520414550400869
+      drop_guide_dotted_42: -5019661847724918253
+      drop_guide_dotted_43: 8987456409346036735
+      drop_guide_dotted_44: 4265673427873909109
+      drop_guide_dotted_5: -3565701301527668849
+      drop_guide_dotted_6: 8593048297403512560
+      drop_guide_dotted_7: -3971532232861964482
+      drop_guide_dotted_8: -3619664553317570242
+      drop_guide_dotted_9: -8028785417513497048
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

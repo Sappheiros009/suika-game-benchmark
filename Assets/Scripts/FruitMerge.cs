@@ -62,6 +62,10 @@ public sealed class FruitMerge : MonoBehaviour
 
     private void TryMerge(FruitMerge other)
     {
+        // 게임오버로 멈춘 뒤에는 합체하지 않습니다. timeScale을 0으로 바꾼 물리 단계에서도
+        // 충돌 콜백은 실행되므로, 점수 없이 과일만 합쳐지는 상황을 여기서 막습니다.
+        if (Time.timeScale <= 0) return;
+
         if (!isActiveAndEnabled || IsMerging || nextFruitPrefab == null
             || other == null || other == this || !other.isActiveAndEnabled || other.IsMerging
             || fruitType != other.fruitType || nextFruitPrefab != other.nextFruitPrefab

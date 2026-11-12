@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// 배경 이미지 자리입니다. 지금은 스프라이트가 비어 있어 카메라 배경색만 보입니다.
+// 배경 이미지를 화면에 맞춥니다. 스프라이트가 비어 있으면 카메라 배경색만 보입니다.
 // Sprite에 이미지를 넣으면 화면 비율과 상관없이 화면 전체를 덮도록 크기를 자동으로 맞춥니다.
 [ExecuteAlways]
 [DisallowMultipleComponent]

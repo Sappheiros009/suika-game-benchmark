@@ -37,6 +37,8 @@ public sealed class FruitDropManager : MonoBehaviour
     private float nextDropTime;
     // 재시작할 때 복원할 낙하 위치입니다. Awake에서 저장합니다.
     private Vector3 initialDropPosition;
+    // 마지막으로 읽은 마우스 화면 좌표입니다. 마우스가 실제로 움직였을 때만 낙하 위치를 바꾸는 데 씁니다.
+    private Vector3 lastMousePosition;
 
     // 다음에 생성할 프리팹입니다. 외부에서는 읽기만 가능합니다.
     public GameObject NextFruitPrefab { get; private set; }
@@ -76,6 +78,8 @@ public sealed class FruitDropManager : MonoBehaviour
         }
 
         SelectNextFruit();
+        // 시작 직후 커서 위치로 튀지 않게, 지금 위치를 기준으로 잡고 다음 움직임부터 따라갑니다.
+        lastMousePosition = Input.mousePosition;
     }
 
     private void Update()
@@ -91,8 +95,29 @@ public sealed class FruitDropManager : MonoBehaviour
         // 누르고 있는 동안만 이동하고, 키를 놓으면 direction이 0이 되어 멈춥니다.
         if (direction != 0) MoveDropPoint(direction * moveSpeed * Time.deltaTime);
 
-        // GetKeyDown은 누른 순간 한 프레임만 true이므로 길게 눌러도 반복 생성되지 않습니다.
-        if (Input.GetKeyDown(KeyCode.Space)) DropFruit();
+        // 마우스는 실제로 움직였을 때만 낙하 위치를 커서 x로 바로 옮깁니다.
+        // 가만히 있는 마우스가 키보드 이동을 덮어쓰지 않으므로 키보드 조작은 그대로 유지됩니다.
+        Vector3 mouse = Input.mousePosition;
+        if ((mouse - lastMousePosition).sqrMagnitude > .01f)
+        {
+            lastMousePosition = mouse;
+            FollowMouse(mouse);
+        }
+
+        // GetKeyDown·GetMouseButtonDown은 누른 순간 한 프레임만 true이므로 길게 눌러도 반복 생성되지 않습니다.
+        // 좌클릭도 Space와 같은 DropFruit을 거치므로 0.4초 간격이 똑같이 적용됩니다.
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) DropFruit();
+    }
+
+    private void FollowMouse(Vector3 screenPosition)
+    {
+        var cam = Camera.main;
+        if (cam == null || dropPoint == null) return;
+
+        // 화면 좌표를 낙하 높이 평면의 월드 좌표로 바꾼 뒤, x 차이만큼 옮깁니다. 바구니 안 제한과 가이드 이동은 MoveDropPoint가 처리합니다.
+        screenPosition.z = dropPoint.position.z - cam.transform.position.z;
+        float targetX = cam.ScreenToWorldPoint(screenPosition).x;
+        MoveDropPoint(targetX - dropPoint.position.x);
     }
 
     public GameObject DropFruit()
@@ -148,6 +173,8 @@ public sealed class FruitDropManager : MonoBehaviour
         nextDropTime = 0;
 
         if (dropPoint != null) dropPoint.position = initialDropPosition;
+        // 게임오버 중에 움직인 마우스 때문에 재시작 첫 프레임에 커서 쪽으로 튀지 않게 기준점을 다시 잡습니다.
+        lastMousePosition = Input.mousePosition;
 
         // 다음 과일을 다시 고르면 ClampDropPosition이 가이드도 시작 위치로 맞춥니다.
         SelectNextFruit();

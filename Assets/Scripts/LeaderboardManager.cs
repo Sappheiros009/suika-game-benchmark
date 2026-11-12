@@ -31,6 +31,9 @@ public sealed class LeaderboardManager : MonoBehaviour
     [SerializeField, Min(1)] private int maxEntries = 5;
     // 방금 등록된 기록을 강조할 색입니다.
     [SerializeField] private Color highlightColor = new Color(.88f, .36f, .08f);
+    // 각 순위 텍스트 앞에 붙일 TMP 서식입니다. 판 그림의 칸 간격에 줄 높이를 맞출 때 씁니다(예: "<line-height=62>").
+    [SerializeField] private string hudTextPrefix = "";
+    [SerializeField] private string resultTextPrefix = "";
 
     private readonly List<Entry> entries = new List<Entry>();
     private int nextOrder;
@@ -90,8 +93,8 @@ public sealed class LeaderboardManager : MonoBehaviour
     private void RefreshDisplay()
     {
         string text = BuildText();
-        if (resultListText != null) resultListText.text = text;
-        if (hudListText != null) hudListText.text = text;
+        if (resultListText != null) resultListText.text = resultTextPrefix + text;
+        if (hudListText != null) hudListText.text = hudTextPrefix + text;
     }
 
     private string BuildText()
