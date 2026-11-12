@@ -47,13 +47,14 @@ public sealed class FruitMerge : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // TODO: 충돌 상대 Collider에서 FruitMerge를 찾아 TryMerge에 전달하세요.
+        // 벽·바닥에는 FruitMerge가 없으므로 null이 전달되고 TryMerge에서 걸러진다.
+        TryMerge(collision.collider.GetComponent<FruitMerge>());
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // TODO: 계속 닿아 있는 상대의 FruitMerge를 찾아 TryMerge에 전달하세요.
-        // 대기 시간 중 합체하지 못한 과일도 대기가 끝나면 합체할 수 있어야 합니다.
+        // 0.2초 대기 때문에 Enter에서 합체하지 못한 과일도, 계속 닿아 있으면 대기가 끝난 뒤 여기서 합체한다.
+        TryMerge(collision.collider.GetComponent<FruitMerge>());
     }
 
     private void TryMerge(FruitMerge other)
@@ -64,26 +65,24 @@ public sealed class FruitMerge : MonoBehaviour
             || remainingMergeDelay > 0 || other.remainingMergeDelay > 0)
             return;
 
-        // TODO 1: 자신과 상대의 IsMerging을 true로 설정하세요.
-        // 다른 충돌 콜백에서 같은 과일을 중복으로 합체하지 못하게 합니다.
+        // 상대 쪽 충돌 콜백이나 세 번째 같은 과일이 이 두 과일을 다시 쓰지 못하게 먼저 잠근다.
+        IsMerging = true;
+        other.IsMerging = true;
 
-        // TODO 2: 두 과일 위치의 중간 지점을 계산하세요.
-        // 두 Rigidbody2D의 linearVelocity와 angularVelocity도 각각 평균을 구하세요.
-        // 생성할 과일이 사용할 부모 Transform을 보관하세요.
-        // Vector3 position = _____;
-        // Vector2 linearVelocity = _____;
-        // float angularVelocity = _____;
-        // Transform parent = _____;
+        Vector3 position = (transform.position + other.transform.position) * .5f;
+        Vector2 linearVelocity = (body.linearVelocity + other.body.linearVelocity) * .5f;
+        float angularVelocity = (body.angularVelocity + other.body.angularVelocity) * .5f;
+        // 재시작 때 함께 지워지도록 원래 과일과 같은 부모(생성 과일 부모) 아래에 만든다.
+        Transform parent = transform.parent;
 
         // 제공 코드: 생성한 과일을 현재 과일과 같은 Scene에 배치하기 위해 보관합니다.
         Scene scene = gameObject.scene;
 
-        // TODO 3: 자신과 상대 GameObject를 비활성화하세요.
-        // Destroy는 프레임 끝에 처리되므로 충돌에서 먼저 제외해야 합니다.
+        // Destroy는 프레임 끝에 처리되므로 지금 비활성화해 충돌에서 바로 빠지게 한다.
+        gameObject.SetActive(false);
+        other.gameObject.SetActive(false);
 
-        // TODO 4: Instantiate를 사용해 nextFruitPrefab을 중간 위치에 Quaternion.identity로 생성하세요.
-        // 자신의 부모 아래에 생성하고, 생성한 오브젝트를 merged에 대입하세요.
-        GameObject merged = null;
+        GameObject merged = Instantiate(nextFruitPrefab, position, Quaternion.identity, parent);
 
         // 제공 코드: 빈칸을 채우기 전에도 아래 코드에서 NullReferenceException이 나지 않게 합니다.
         if (merged == null) return;
@@ -98,12 +97,15 @@ public sealed class FruitMerge : MonoBehaviour
         var mergedBody = merged.GetComponent<Rigidbody2D>();
         mergedBody.simulated = true;
 
-        // TODO 6: 생성한 Rigidbody2D의 linearVelocity와 angularVelocity에
-        // 앞에서 계산한 두 과일의 평균 속도와 평균 각속도를 적용하세요.
+        // 평균 속도를 넘겨 합체 결과가 공중에 멈추지 않고 자연스럽게 이어서 움직이게 한다.
+        mergedBody.linearVelocity = linearVelocity;
+        mergedBody.angularVelocity = angularVelocity;
 
-        // TODO 7: 자신과 상대 GameObject를 Destroy로 제거하세요.
+        Destroy(gameObject);
+        Destroy(other.gameObject);
 
-        // TODO 8: ScoreManager.Instance가 있으면 AddMergeScore를 호출하세요.
-        // 생성된 과일의 Type을 전달하여 합체 결과 점수를 한 번만 더하세요.
+        // 합체 한 번에 한 번만 호출된다. 점수는 '생성된' 과일 종류 기준이다.
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.AddMergeScore(mergedFruit.Type);
     }
 }

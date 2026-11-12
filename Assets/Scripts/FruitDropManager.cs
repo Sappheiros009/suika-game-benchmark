@@ -76,13 +76,14 @@ public sealed class FruitDropManager : MonoBehaviour
 
         float direction = 0;
 
-        // TODO 1: Input.GetKey로 direction을 설정하세요.
+        // 양쪽을 동시에 누르면 -1 + 1 = 0이 되어 움직이지 않는다.
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) direction -= 1;
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) direction += 1;
 
-        // TODO 2: 낙하 위치를 이동하세요.
-        // 이동 거리는 direction, moveSpeed, Time.deltaTime을 곱해 계산하세요.
+        if (direction != 0) MoveDropPoint(direction * moveSpeed * Time.deltaTime);
 
-        // TODO 3: Input.GetKeyDown으로 Space를 누른 순간을 확인하고 DropFruit를 호출하세요.
-        // 키를 계속 누르고 있어도 과일이 반복 생성되지 않아야 합니다.
+        // GetKeyDown은 누른 순간 한 프레임만 true라서 길게 눌러도 반복 생성되지 않는다.
+        if (Input.GetKeyDown(KeyCode.Space)) DropFruit();
     }
 
     public GameObject DropFruit()
@@ -93,43 +94,70 @@ public sealed class FruitDropManager : MonoBehaviour
 
         nextDropTime = Time.time + dropCooldown;
 
-        // TODO: dropPoint를 이용해 과일을 생성하세요.
-        GameObject fruit = null;
+        GameObject fruit = Instantiate(NextFruitPrefab, dropPoint.position, dropPoint.rotation, spawnedFruitParent);
 
         // 제공 코드: 빈칸을 채우기 전에는 아래 물리 설정을 건너뜁니다.
         if (fruit == null) return null;
         fruit.GetComponent<Rigidbody2D>().simulated = true;
+
+        // 낙하에 성공했을 때만 다음 과일을 다시 고른다.
+        SelectNextFruit();
 
         return fruit;
     }
 
     private void SelectNextFruit()
     {
-        // TODO: fruitPrefabs에서 무작위로 과일을 선택해 NextFruitPrefab에 저장하고,
-        // ClampDropPosition을 호출해 낙하 위치를 보정하세요. 다음 과일 UI도 갱신하세요.
+        NextFruitPrefab = fruitPrefabs[Random.Range(0, fruitPrefabs.Length)];
 
-        // 이미지와 이름 설정 예시:
-        // if (nextFruitImage != null)
-        // {
-        //     var body = NextFruitPrefab.transform.Find("Body");
-        //     if (body != null)
-        //         nextFruitImage.sprite = body.GetComponent<SpriteRenderer>().sprite;
-        // }
-        // if (nextFruitName != null)
-        //     nextFruitName.text = NextFruitPrefab.name.ToUpperInvariant();
+        // 작은 과일 다음에 큰 과일이 골라져도 벽과 겹치지 않도록 위치를 다시 보정한다.
+        ClampDropPosition();
+
+        if (nextFruitImage != null)
+        {
+            var body = NextFruitPrefab.transform.Find("Body");
+            if (body != null)
+                nextFruitImage.sprite = body.GetComponent<SpriteRenderer>().sprite;
+        }
+        if (nextFruitName != null)
+        {
+            var merge = NextFruitPrefab.GetComponent<FruitMerge>();
+            nextFruitName.text = merge != null ? GetDisplayName(merge.Type) : NextFruitPrefab.name;
+        }
+    }
+
+    // 다음 과일 UI에 표시할 한국어 이름입니다. (한글이 들어간 TMP 폰트 에셋이 필요합니다.)
+    public static string GetDisplayName(FruitType type)
+    {
+        switch (type)
+        {
+            case FruitType.Cherry: return "체리";
+            case FruitType.Mandarin: return "귤";
+            case FruitType.Apple: return "사과";
+            case FruitType.Melon: return "멜론";
+            case FruitType.Watermelon: return "수박";
+            default: return type.ToString();
+        }
     }
 
     public void ResetRound()
     {
-        // TODO: 낙하 대기 시간을 초기화하고, dropPoint를 initialDropPosition으로 되돌리세요.
-        // SelectNextFruit를 호출해 다음 과일을 다시 선택하세요.
+        nextDropTime = 0;
+        if (dropPoint != null) dropPoint.position = initialDropPosition;
+        // SelectNextFruit 안의 ClampDropPosition이 가이드 위치도 함께 맞춘다.
+        SelectNextFruit();
     }
 
     public void MoveDropPoint(float distance)
     {
         if (!isActiveAndEnabled || dropPoint == null || Time.timeScale <= 0) return;
 
-        // TODO: dropPoint의 현재 위치에서 x 좌표에 distance를 더하고, 변경한 위치를 적용하세요.
+        var position = dropPoint.position;
+        position.x += distance;
+        dropPoint.position = position;
+
+        // 바구니 밖으로 나가지 않게 보정하고 가이드도 함께 이동시킨다.
+        ClampDropPosition();
     }
 
     private void ClampDropPosition()
