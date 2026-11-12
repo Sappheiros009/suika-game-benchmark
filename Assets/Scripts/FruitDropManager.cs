@@ -41,6 +41,14 @@ public sealed class FruitDropManager : MonoBehaviour
     // 다음에 생성할 프리팹입니다. 외부에서는 읽기만 가능합니다.
     public GameObject NextFruitPrefab { get; private set; }
 
+    // 낙하 위치 Transform입니다. 미리보기처럼 낙하 위치를 따라가야 하는 연출에서 읽습니다.
+    public Transform DropPoint => dropPoint;
+
+    // 과일 하나가 실제로 생성되어 떨어지기 시작할 때 알립니다. 효과음 재생에 사용합니다.
+    public event System.Action<GameObject> FruitDropped;
+    // 다음 과일 선택이 바뀔 때 알립니다. 낙하 위치 미리보기 갱신에 사용합니다.
+    public event System.Action<GameObject> NextFruitChanged;
+
     private void Awake()
     {
         if (dropPoint != null) initialDropPosition = dropPoint.position;
@@ -76,13 +84,15 @@ public sealed class FruitDropManager : MonoBehaviour
 
         float direction = 0;
 
-        // TODO 1: Input.GetKey로 direction을 설정하세요.
+        // 왼쪽과 오른쪽을 동시에 누르면 -1과 +1이 상쇄되어 이동하지 않습니다.
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) direction -= 1;
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) direction += 1;
 
-        // TODO 2: 낙하 위치를 이동하세요.
-        // 이동 거리는 direction, moveSpeed, Time.deltaTime을 곱해 계산하세요.
+        // 누르고 있는 동안만 이동하고, 키를 놓으면 direction이 0이 되어 멈춥니다.
+        if (direction != 0) MoveDropPoint(direction * moveSpeed * Time.deltaTime);
 
-        // TODO 3: Input.GetKeyDown으로 Space를 누른 순간을 확인하고 DropFruit를 호출하세요.
-        // 키를 계속 누르고 있어도 과일이 반복 생성되지 않아야 합니다.
+        // GetKeyDown은 누른 순간 한 프레임만 true이므로 길게 눌러도 반복 생성되지 않습니다.
+        if (Input.GetKeyDown(KeyCode.Space)) DropFruit();
     }
 
     public GameObject DropFruit()
@@ -93,43 +103,67 @@ public sealed class FruitDropManager : MonoBehaviour
 
         nextDropTime = Time.time + dropCooldown;
 
-        // TODO: dropPoint를 이용해 과일을 생성하세요.
-        GameObject fruit = null;
+        // 낙하 위치와 회전에서 생성하고, 게임오버 판정과 재시작 정리를 위해 과일 부모 아래에 둡니다.
+        GameObject fruit = Instantiate(NextFruitPrefab, dropPoint.position, dropPoint.rotation, spawnedFruitParent);
 
         // 제공 코드: 빈칸을 채우기 전에는 아래 물리 설정을 건너뜁니다.
         if (fruit == null) return null;
         fruit.GetComponent<Rigidbody2D>().simulated = true;
+
+        // 낙하에 성공했으므로 다음 과일을 다시 고릅니다.
+        SelectNextFruit();
+        FruitDropped?.Invoke(fruit);
 
         return fruit;
     }
 
     private void SelectNextFruit()
     {
-        // TODO: fruitPrefabs에서 무작위로 과일을 선택해 NextFruitPrefab에 저장하고,
-        // ClampDropPosition을 호출해 낙하 위치를 보정하세요. 다음 과일 UI도 갱신하세요.
+        if (fruitPrefabs == null || fruitPrefabs.Length == 0) return;
 
-        // 이미지와 이름 설정 예시:
-        // if (nextFruitImage != null)
-        // {
-        //     var body = NextFruitPrefab.transform.Find("Body");
-        //     if (body != null)
-        //         nextFruitImage.sprite = body.GetComponent<SpriteRenderer>().sprite;
-        // }
-        // if (nextFruitName != null)
-        //     nextFruitName.text = NextFruitPrefab.name.ToUpperInvariant();
+        // 무작위 후보(체리·귤·사과) 중 하나를 고릅니다. 같은 과일이 연속으로 나와도 됩니다.
+        NextFruitPrefab = fruitPrefabs[Random.Range(0, fruitPrefabs.Length)];
+
+        // 작은 과일 다음에 큰 과일이 골라져도 벽과 겹치지 않도록 낙하 위치를 다시 보정합니다.
+        ClampDropPosition();
+
+        if (nextFruitImage != null)
+        {
+            var body = NextFruitPrefab.transform.Find("Body");
+            if (body != null)
+            {
+                nextFruitImage.sprite = body.GetComponent<SpriteRenderer>().sprite;
+                nextFruitImage.enabled = nextFruitImage.sprite != null;
+            }
+        }
+        if (nextFruitName != null)
+            nextFruitName.text = NextFruitPrefab.name.ToUpperInvariant();
+
+        NextFruitChanged?.Invoke(NextFruitPrefab);
     }
 
     public void ResetRound()
     {
-        // TODO: 낙하 대기 시간을 초기화하고, dropPoint를 initialDropPosition으로 되돌리세요.
-        // SelectNextFruit를 호출해 다음 과일을 다시 선택하세요.
+        // 재시작 직후 바로 낙하할 수 있도록 대기 시간을 지웁니다.
+        nextDropTime = 0;
+
+        if (dropPoint != null) dropPoint.position = initialDropPosition;
+
+        // 다음 과일을 다시 고르면 ClampDropPosition이 가이드도 시작 위치로 맞춥니다.
+        SelectNextFruit();
     }
 
     public void MoveDropPoint(float distance)
     {
         if (!isActiveAndEnabled || dropPoint == null || Time.timeScale <= 0) return;
 
-        // TODO: dropPoint의 현재 위치에서 x 좌표에 distance를 더하고, 변경한 위치를 적용하세요.
+        // x만 바꾸므로 이동 중에도 낙하 높이(y)는 유지됩니다.
+        var position = dropPoint.position;
+        position.x += distance;
+        dropPoint.position = position;
+
+        // 바구니 안으로 제한하고 가이드를 같은 x로 옮깁니다.
+        ClampDropPosition();
     }
 
     private void ClampDropPosition()

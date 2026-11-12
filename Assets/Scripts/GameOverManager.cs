@@ -45,6 +45,11 @@ public sealed class GameOverManager : MonoBehaviour
     // 현재 게임오버 상태인지 나타냅니다. 외부에서는 읽기만 가능합니다.
     public bool IsGameOver { get; private set; }
 
+    // 게임오버가 확정된 순간 한 번 알립니다. 인자는 그 판의 최종 점수입니다. 리더보드 등록에 사용합니다.
+    public event System.Action<int> GameEnded;
+    // 재시작이 끝난 직후 알립니다. 미리보기와 연출을 시작 상태로 되돌릴 때 사용합니다.
+    public event System.Action Restarted;
+
     private void Start()
     {
         if (dropManager == null || spawnedFruitParent == null || heightLimit == null)
@@ -108,33 +113,70 @@ public sealed class GameOverManager : MonoBehaviour
 
     private void Update()
     {
-        // TODO: 게임오버 상태에서 R 키를 누르면 게임이 다시 시작되게 하세요.
+        // Update는 Time.timeScale이 0이어도 호출되므로 멈춘 상태에서도 R 입력을 받습니다.
+        // 진행 중에는 IsGameOver가 false라서 R을 눌러도 판이 초기화되지 않습니다.
+        if (IsGameOver && Input.GetKeyDown(KeyCode.R)) RestartGame();
     }
 
     private void EndGame()
     {
-        // TODO: 낙하 입력과 가이드를 끄고 결과 패널을 표시하세요.
+        if (IsGameOver) return;
+        IsGameOver = true;
+
+        // 낙하 매니저를 끄면 Update가 멈춰 좌우 이동과 Space 낙하가 모두 막힙니다.
+        if (dropManager != null) dropManager.enabled = false;
+        if (dropGuide != null) dropGuide.gameObject.SetActive(false);
+        if (gameOverPanel != null) gameOverPanel.SetActive(true);
 
         // 제공 코드: 재시작할 때 복원할 시간을 저장하고 게임을 멈춥니다.
         previousTimeScale = Time.timeScale > 0 ? Time.timeScale : 1f;
         Time.timeScale = 0;
 
-        // TODO: ScoreManager의 메서드를 이용해 점수를 반영하세요.
+        // 점수 누적을 막고 결과 패널의 최종 점수를 갱신합니다.
+        int finalScore = 0;
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.FinishRound();
+            finalScore = ScoreManager.Instance.CurrentScore;
+        }
+
+        GameEnded?.Invoke(finalScore);
     }
 
     public void RestartGame()
     {
-        // TODO: 생성된 과일들을 비활성화하고 제거하세요.
+        // 뒤에서부터 지워야 자식 순서가 바뀌어도 빠짐없이 처리됩니다.
+        // 비활성화를 먼저 해서 Destroy가 처리되기 전 프레임의 충돌과 판정에서 제외합니다.
+        if (spawnedFruitParent != null)
+        {
+            for (int i = spawnedFruitParent.childCount - 1; i >= 0; i--)
+            {
+                var child = spawnedFruitParent.GetChild(i).gameObject;
+                child.SetActive(false);
+                Destroy(child);
+            }
+        }
 
-        // TODO: 과일 추적 컬렉션과 게임오버 상태를 초기화하세요.
+        states.Clear();
+        fruits.Clear();
+        removedFruits.Clear();
+        IsGameOver = false;
 
         // 제공 코드: 게임 진행 속도를 복원합니다.
         Time.timeScale = previousTimeScale;
 
-        // TODO: 낙하 매니저를 활성화하고 ResetRound를 호출하세요.
-        // 가이드를 표시하고 결과 패널은 숨기세요.
+        if (dropManager != null)
+        {
+            dropManager.enabled = true;
+            dropManager.ResetRound();
+        }
+        if (dropGuide != null) dropGuide.gameObject.SetActive(true);
+        if (gameOverPanel != null) gameOverPanel.SetActive(false);
 
-        // TODO: ScoreManager의 메서드 이용해 점수를 초기화하세요.
+        // 현재 점수만 0으로 돌리고, 같은 실행 중 최고 점수는 유지됩니다.
+        if (ScoreManager.Instance != null) ScoreManager.Instance.ResetScore();
+
+        Restarted?.Invoke();
     }
 
     private void OnDestroy()
