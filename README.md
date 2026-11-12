@@ -43,7 +43,7 @@ CAT&amp;DOG 기초스터디 최종과제(대체과제)입니다. 과제 안내�
 
 - **효과음**: 낙하, 첫 착지, 합체(단계별 음높이), 멜론·수박 생성, 게임오버, 최고 기록 갱신, 재시작 — Kenney CC0 효과음
 - **합체 이펙트**: 별 반짝임, 빛 고리, 수박 생성 시 큰 폭발 — Kenney Particle Pack 텍스처 + Unity Particle System
-- **UI**: Kenney UI Pack 패널과 Kenney Future 폰트, 게임오버 카드 등장, 점수 강조, 최고 기록 배지
+- **UI**: Kenney UI Pack 패널, TMP 기본 폰트(Liberation Sans, 제목·숫자 굵게), 게임오버 카드 등장, 점수 강조, 최고 기록 배지
 - 합체 결과 과일이 부풀며 나타나는 연출과 점수 강조는 맞는 외부 애니메이션 에셋이 없어 코드로 처리했습니다. 물리 크기에 영향을 주지 않도록 Collider가 없는 몸통·표정만 키웁니다.
 - 모든 연출은 이벤트를 듣기만 하며 합체·점수·게임오버 판정에 관여하지 않습니다. 게임오버 시 `Time.timeScale = 0`으로 입자도 함께 멈춥니다.
 
@@ -67,7 +67,6 @@ CAT&amp;DOG 기초스터디 최종과제(대체과제)입니다. 과제 안내�
 | Impact Sounds | Kenney (kenney.nl) | [Boyquotes/kenney-impact-sounds-for-godot](https://github.com/Boyquotes/kenney-impact-sounds-for-godot) | impact_soft_medium_000~002 |
 | Particle Pack 1.1 | Kenney (kenney.nl) | [Calinou/kenney-particle-pack](https://github.com/Calinou/kenney-particle-pack) | star_06, light_02, circle_05, magic_02 |
 | UI Pack | Kenney (kenney.nl) | [lpfd/kenney-uipack](https://github.com/lpfd/kenney-uipack) | 회색·노란색 패널, 막대, 별, 재시작 아이콘 |
-| Kenney Fonts | Kenney (kenney.nl) | [ereborstudios/kenney-fonts](https://github.com/ereborstudios/kenney-fonts) | Kenney Future |
 
 각 팩의 라이선스 원문은 `Assets/ThirdParty/Kenney/Licenses/`에 있습니다.
 

@@ -40,7 +40,8 @@ public static class SuikaSceneBuilder
         }
 
         ConfigureImports();
-        var font = CreateFontAsset();
+        // 가독성을 위해 TMP 기본 폰트(Liberation Sans SDF)를 씁니다. 제목과 숫자는 굵게 표시합니다.
+        var font = TMP_Settings.defaultFontAsset;
         AddImpactSoundToFruitBase();
 
         if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
@@ -233,56 +234,6 @@ public static class SuikaSceneBuilder
         importer.mipmapEnabled = false;
         importer.spriteBorder = border;
         importer.SaveAndReimport();
-    }
-
-    private static TMP_FontAsset CreateFontAsset()
-    {
-        const string fontPath = Kenney + "/Fonts/KenneyFuture.ttf";
-        const string assetPath = Kenney + "/Fonts/KenneyFuture SDF.asset";
-
-        var existing = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(assetPath);
-        if (existing != null) return existing;
-
-        var source = AssetDatabase.LoadAssetAtPath<Font>(fontPath);
-        var fallback = TMP_Settings.defaultFontAsset;
-        if (source == null) return fallback;
-
-        try
-        {
-            var asset = TMP_FontAsset.CreateFontAsset(source);
-            if (asset == null) return fallback;
-            asset.name = "KenneyFuture SDF";
-            AssetDatabase.CreateAsset(asset, assetPath);
-            if (asset.material != null)
-            {
-                asset.material.name = asset.name + " Material";
-                AssetDatabase.AddObjectToAsset(asset.material, asset);
-            }
-            if (asset.atlasTextures != null)
-            {
-                for (int i = 0; i < asset.atlasTextures.Length; i++)
-                {
-                    var texture = asset.atlasTextures[i];
-                    if (texture == null) continue;
-                    texture.name = asset.name + " Atlas " + i;
-                    AssetDatabase.AddObjectToAsset(texture, asset);
-                }
-            }
-            // Kenney Future에 없는 글자는 TMP 기본 폰트로 대신 그립니다.
-            if (fallback != null)
-            {
-                if (asset.fallbackFontAssetTable == null) asset.fallbackFontAssetTable = new System.Collections.Generic.List<TMP_FontAsset>();
-                asset.fallbackFontAssetTable.Add(fallback);
-            }
-            EditorUtility.SetDirty(asset);
-            AssetDatabase.SaveAssets();
-            return asset;
-        }
-        catch (System.Exception exception)
-        {
-            Debug.LogWarning("Kenney Future 폰트 에셋을 만들지 못해 기본 폰트를 사용합니다: " + exception.Message);
-            return fallback;
-        }
     }
 
     private static void AddImpactSoundToFruitBase()
@@ -572,10 +523,19 @@ public static class SuikaSceneBuilder
         label.fontSize = size;
         label.color = Ink;
         label.alignment = alignment;
+        label.fontStyle = IsBold(name, parent) ? FontStyles.Bold : FontStyles.Normal;
         label.textWrappingMode = TextWrappingModes.NoWrap;
         label.overflowMode = TextOverflowModes.Overflow;
         label.raycastTarget = false;
         return label;
+    }
+
+    // 제목(패널 이름, GAME OVER, RANKING)과 점수 숫자, 최고 기록 배지는 굵게, 조작법·목록·과일 이름은 보통 굵기입니다.
+    private static readonly string[] BoldNames = { "Label", "ScoreText", "BestScoreText", "Title", "FinalScoreText", "RankingTitle" };
+
+    private static bool IsBold(string name, Transform parent)
+    {
+        return System.Array.IndexOf(BoldNames, name) >= 0 || (name == "Text" && parent != null && parent.name == "NewBest");
     }
 
     // ---------- 공통 ----------
