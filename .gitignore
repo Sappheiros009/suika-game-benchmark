@@ -1,0 +1,36 @@
+# Unity generated files
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# IDE and local tool state
+/.vs/
+/.idea/
+/.vscode/
+/.codex/
+/.agents/
+/.aws/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.suo
+*.pidb
+*.booproj
+*.opendb
+*.VC.db
+
+# Generated captures and OS files
+/Screenshots/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+AGENTS.md
+Docs/
